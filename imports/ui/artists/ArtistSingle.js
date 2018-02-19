@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import { createContainer } from 'meteor/react-meteor-data';
-import {browserHistory, Link} from 'react-router';
+import { withTracker } from 'meteor/react-meteor-data';
+import { browserHistory, Link } from 'react-router';
 import Masonry from 'react-masonry-component';
 import swal from 'sweetalert2';
 // import _ from 'lodash';
 
 // import ReleaseCard from '../../../shared/components/releases/ReleaseCard.js';
+import ReleaseCard from '../releases/ReleaseCard';
 import BarstenViewer from '../utilities/BarstenViewer';
 import Preloader from '../utilities/Preloader';
 
@@ -15,41 +16,24 @@ import ArtistEvents from './ArtistEvents.js';
 class ArtistSingle extends Component {
 
 	goToRelease(release) {
-		browserHistory.push('/releases/' + release._id);
+		browserHistory.push('/release/' + release._id);
 	}
 
 	goToLink(link) {
 		browserHistory.push(link.url);
 	}
 
-	// subscribeToNewsletter () {
-
-	// 	swal({
-	// 		title: 'Skriv inn epostadresse',
-	// 		input: 'email'
-	// 	}).then(function (email) {
-
-	// 		var subscriber = {
-	// 			email: email
-	// 		};
-
-	// 		Meteor.call('subscribeToNewsletter', subscriber, (err, res) => {
-	// 			if (err) {
-	// 				console.log(err);
-	// 			} else {
-	// 				swal({
-	// 					type: 'success',
-	// 					html: 'Vi holder deg oppdatert på: ' + email
-	// 				});
-	// 			}
-	// 		});
-	// 	}).catch(swal.noop);
-	// }
-
 	render () {
 
 		const artist = this.props.artist;
-		const songkickUpcoming = (artist && artist.songkickId) ? <div><hr /><ArtistEvents songkickId={artist.songkickId} /></div> : '';
+
+		if (!artist) {
+			return <Preloader />
+		}
+
+		const bio = artist.bio ? <div><hr /><div className="container"><BarstenViewer content={artist.bio} placeholder='No bio yet ...'/></div></div> : null;
+
+		const songkickUpcoming = (artist && artist.songkickId) ? <div><hr /><ArtistEvents songkickId={artist.songkickId} /><hr /></div> : '';
 		// const songkickPast = (artist && artist.songkickId) ? <div><ArtistEvents songkickId={artist.songkickId} scope="past" /><hr /></div> : '';
 		var links = (artist && artist.links) ? artist.links : [];
 
@@ -62,7 +46,12 @@ class ArtistSingle extends Component {
 
 		if (artist) {
 			if (artist.bannerType == 'picture') {
-				banner = <img src={artist.imageUrl} className="img-responsive" />
+
+				if (artist.localImageId) {
+					banner = <img src={`/images/${artist.localImageId}`} className="img-responsive" />;
+				} else {
+					banner = <img src={artist.imageUrl} className="img-responsive" />;
+				}
 			}
 
 			if (artist.bannerType == 'text') {
@@ -94,9 +83,9 @@ class ArtistSingle extends Component {
 		};
 
 		// Show loading while waiting for subscriptions
-		if (!this.props.artist || !this.props.artist) {
-			return <Preloader />
-		}
+		// if (!this.props.artist || !this.props.artist) {
+		// 	return <Preloader />
+		// }
 
 		return (
 			<div>
@@ -124,18 +113,16 @@ class ArtistSingle extends Component {
 							}
 
 							return (
-								<div key={link.id} className="col-sm-4 col-xs-6">
-									<Link target={target} to={link.url}>{link.name}</Link>
+								<div key={link.id} className="col-sm-4 col-xs-6 text-center">
+									<Link style={{textTranform: "uppercase"}} target={target} to={link.url}>{link.name}</Link>
 								</div>
 							);
 						})}
 					</div>
 
-					<BarstenViewer content={artist.bio} placeholder='No bio yet ...'/>
+					{bio}
 
 					{songkickUpcoming}
-
-					<hr />
 
 					<Masonry
 						className={'artist-single-releases'} // default '' 
@@ -149,8 +136,6 @@ class ArtistSingle extends Component {
 						})}
 					</Masonry>
 
-					<hr />
-
 				</div>
 							
 			</div>
@@ -158,7 +143,7 @@ class ArtistSingle extends Component {
 	}
 }
 
-export default createContainer((params) => {
+export default withTracker((params) => {
 	Meteor.subscribe('artists');
 	Meteor.subscribe('releases');
 
@@ -168,4 +153,4 @@ export default createContainer((params) => {
 		artist: Artists.find({_id: artistId}).fetch()[0],
 		releases: Releases.find({artists: {$in: [artistId]}}, {sort: {releaseDate: -1}}).fetch(),
 	};
-}, ArtistSingle);
+})(ArtistSingle);

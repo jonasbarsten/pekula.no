@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createContainer } from 'meteor/react-meteor-data';
+import { withTracker } from 'meteor/react-meteor-data';
 import swal from 'sweetalert2';
 import { browserHistory } from 'react-router';
 import Masonry from 'react-masonry-component';
@@ -28,17 +28,18 @@ class EditArtist extends Component {
 			confirmButtonColor: '#3085d6',
 			cancelButtonColor: '#d33',
 			confirmButtonText: 'Yes, delete it!'
-		}).then(() => {
-			Meteor.call('artist.delete', this.props.artist._id, function(err, data) {
-				if (err) {
-					swal("The artist cound not be deleted.", "warning");
-				} else {
-					browserHistory.push('/admin/artists');
-					Bert.alert('Artist deleted', 'success', 'growl-bottom-right', 'fa-smile-o');
-				}
-			});
-		// Since this is a promise, we have to catch "cancel" and say it is ok
-		}).catch(swal.noop);
+		}).then((result) => {
+			if (result.value) {
+				Meteor.call('artist.delete', this.props.artist._id, function(err, data) {
+					if (err) {
+						swal("The artist cound not be deleted.", "warning");
+					} else {
+						browserHistory.push('/admin/artists');
+						Bert.alert('Artist deleted', 'success', 'growl-bottom-right', 'fa-smile-o');
+					}
+				});
+			}
+		});
 	}
 
 	changeBannerType(type) {
@@ -61,7 +62,7 @@ class EditArtist extends Component {
 	}
 
 	changeBannerText(text) {
-		Meteor.call('changeArtistBannerText', this.props.artist._id, text, function (err, data) {
+		Meteor.call('artist.changeBannerText', this.props.artist._id, text, function (err, data) {
 			if (err) {
 				console.log(err);
 			} else {
@@ -96,9 +97,7 @@ class EditArtist extends Component {
 
 		}).then((result) => {
 
-			if (result == 'picture') {
-
-				// const imageUrl
+			if (result.value == 'picture') {
 
 				if (artist.localImageId) {
 					swal({
@@ -106,77 +105,55 @@ class EditArtist extends Component {
 						showCancelButton: true,
 						confirmButtonText: 'Use this',
 						cancelButtonText: 'Replace'
-					}).then(() => {
-						this.changeBannerType('picture');
-
-					}, function(dismiss) {
-						if (dismiss === 'cancel') {
-							// this.changeBannerType('picture');
+					}).then((result) => {
+						if (result.dismiss == "cancel") {
 							$('#uploadArtistBanner').trigger('click');
 						}
-					}).catch(swal.noop);
+						if (result.value == true) {
+							this.changeBannerType('picture');
+						}
+					});
 				} else {
 					swal({
 						imageUrl: artist.imageUrl,
 						showCancelButton: true,
 						confirmButtonText: 'Use this',
 						cancelButtonText: 'Replace'
-					}).then(() => {
-						this.changeBannerType('picture');
-
-					}, function(dismiss) {
-						if (dismiss === 'cancel') {
-							// this.changeBannerType('picture');
+					}).then((result) => {
+						if (result.dismiss == "cancel") {
 							$('#uploadArtistBanner').trigger('click');
 						}
-					}).catch(swal.noop);
+						if (result.value == true) {
+							this.changeBannerType('picture');
+						}
+					});
 				}
 			}
 
-			if (result == 'text') {
+			if (result.value == 'text') {
 				swal({
 					title: 'Banner text',
 					text: artist.bannerText,
 					input: 'text',
-					showCancelButton: true,
-					inputValidator: function (value) {
-						return new Promise(function (resolve, reject) {
-							if (value) {
-								resolve()
-							} else {
-								reject('You need to write something!')
-							}
-						})
-					}
+					showCancelButton: true
 				}).then((result) => {
-					this.changeBannerText(result);
+					this.changeBannerText(result.value);
 					this.changeBannerType('text');
-				}).catch(swal.noop);
+				});
 			}
 
-			if (result == 'youtube') {
+			if (result.value == 'youtube') {
 				swal({
 					title: 'YouTube ID',
 					text: artist.bannerYouTube,
 					input: 'text',
-					showCancelButton: true,
-					inputValidator: function (value) {
-						return new Promise(function (resolve, reject) {
-							if (value) {
-								resolve()
-							} else {
-								reject('You need to write something!')
-							}
-						})
-					}
+					showCancelButton: true
 				}).then((result) => {
-					this.changeBannerYouTube(result);
+					this.changeBannerYouTube(result.value);
 					this.changeBannerType('youtube');
-				}).catch(swal.noop);
+				});
 			}
-
-		// Since this is a promise, we have to catch "cancel" and say it is ok
-		}).catch(swal.noop);
+		});
 	}
 
 	editName () {
@@ -487,7 +464,7 @@ class EditArtist extends Component {
 	}
 }
 
-export default createContainer((params) => {
+export default withTracker((params) => {
 	Meteor.subscribe('artists');
 	Meteor.subscribe('releases');
 
@@ -497,4 +474,4 @@ export default createContainer((params) => {
 		artist: Artists.find({_id: artistId}).fetch()[0],
 		releases: Releases.find({artists: {$in: [artistId]}}, {sort: {releaseDate: -1}}).fetch(),
 	};
-}, EditArtist);
+})(EditArtist);

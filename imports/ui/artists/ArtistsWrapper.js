@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createContainer } from 'meteor/react-meteor-data';
+import { withTracker } from 'meteor/react-meteor-data';
 import { browserHistory } from 'react-router';
 
 import ArtistCard from './ArtistCard.js';
@@ -31,11 +31,11 @@ class ArtistsWrapper extends Component {
 	}
 }
 
-export default createContainer(() => {
+export default withTracker(() => {
 
 	Meteor.subscribe('artists');
 
 	return {
 		artists: Artists.find().fetch()
 	};
-}, ArtistsWrapper);
+})(ArtistsWrapper);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createContainer } from 'meteor/react-meteor-data';
+import { withTracker } from 'meteor/react-meteor-data';
 
 import Preloader from './Preloader';
 
@@ -31,7 +31,7 @@ class AwsImage extends Component {
 	}
 }
 
-export default createContainer((params) => {
+export default withTracker((params) => {
 	const handle = Meteor.subscribe('images');
 
 	const imageId = params.localImageId;
@@ -41,4 +41,4 @@ export default createContainer((params) => {
 		localImage: Images.findOne({_id: imageId})
 	}
 
-}, AwsImage);
+})(AwsImage);

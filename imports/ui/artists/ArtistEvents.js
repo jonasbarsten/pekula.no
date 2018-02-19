@@ -137,8 +137,8 @@ export default class ArtistEvents extends Component {
 		// }
 
 		return (
-			<div className="events-list">
-				<div className="row">
+			<div className="events-list container">
+				<div>
 					{this.state.events}
 				</div>
 				<div className="row">

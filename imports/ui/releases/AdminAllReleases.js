@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { createContainer } from 'meteor/react-meteor-data';
+import { withTracker } from 'meteor/react-meteor-data';
 import {browserHistory} from 'react-router';
 import Masonry from 'react-masonry-component';
 
@@ -74,10 +74,10 @@ class AdminAllReleases extends Component {
 	}
 }
 
-export default createContainer((params) => {
+export default withTracker((params) => {
 	Meteor.subscribe('releases');
 
 	return {
 		releases: Releases.find().fetch()
 	};
-}, AdminAllReleases);
+})(AdminAllReleases);

@@ -2,7 +2,6 @@ Meteor.methods({
 	'artist.add': function (artist) {
 
 		if ( Roles.userIsInRole(Meteor.userId(), ['super-admin', 'admin'], 'CMS')) {
-
 			var artistExists = Artists.findOne({'nameLower': artist.name.toLowerCase()});
 
 			if (artistExists) {
@@ -11,17 +10,11 @@ Meteor.methods({
 				let newArtist = Artists.insert(artist);
 				return newArtist;
 			}
-
 		}
-
-
-
 	},
 	'artist.delete': function (artistId) {
 
 		if ( Roles.userIsInRole(Meteor.userId(), ['super-admin', 'admin'], 'CMS')) {
-
-			// Delete files associated with artist from s3
 			var artist = Artists.findOne({_id: artistId});
 
 			if (artist.localImageId) {
@@ -31,12 +24,8 @@ Meteor.methods({
 					}
 				});
 			}
-
-			// Delete artist
 			Artists.remove({_id: artistId});
 		}
-
-
 	},
 
 	'artist.changeName': function (artistId, newName) {
@@ -147,7 +136,10 @@ Meteor.methods({
 		}
 	},
 
-	'changeArtistBannerText': function (artistId, text) {
+	'artist.changeBannerText': function (artistId, text) {
+
+		console.log(artistId);
+		console.log(text);
 
 		if ( Roles.userIsInRole(Meteor.userId(), ['super-admin', 'admin'], 'CMS')) {
 			Artists.update({_id: artistId}, {$set: {bannerText: text}});

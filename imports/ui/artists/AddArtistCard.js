@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { createContainer } from 'meteor/react-meteor-data';
+// import { withTracker } from 'meteor/react-meteor-data';
 
 export default class AddArtistCard extends Component {
 

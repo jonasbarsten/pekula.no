@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createContainer } from 'meteor/react-meteor-data';
+import { withTracker } from 'meteor/react-meteor-data';
 import { Link } from 'react-router';
 
 class ListPages extends Component {
@@ -57,10 +57,10 @@ class ListPages extends Component {
 	}
 }
 
-export default createContainer(() => {
+export default withTracker(() => {
 	Meteor.subscribe('pages');
 
 	return {
 		pages: Pages.find().fetch()
 	};
-}, ListPages);
+})(ListPages);

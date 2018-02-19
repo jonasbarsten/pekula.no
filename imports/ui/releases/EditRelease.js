@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createContainer } from 'meteor/react-meteor-data';
+import { withTracker } from 'meteor/react-meteor-data';
 import swal from 'sweetalert2';
 import { browserHistory } from 'react-router';
 import DatePicker from 'react-datepicker';
@@ -379,7 +379,7 @@ class EditRelease extends Component {
 	}
 }
 
-export default createContainer((params) => {
+export default withTracker((params) => {
 	Meteor.subscribe('releases');
 	Meteor.subscribe('artists');
 	Meteor.subscribe('tracks');
@@ -399,4 +399,4 @@ export default createContainer((params) => {
 		artists: artists,
 		tracks: tracks
 	};
-}, EditRelease)
+})(EditRelease)

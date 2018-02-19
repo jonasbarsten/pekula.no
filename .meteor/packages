@@ -22,7 +22,6 @@ gwendall:accounts-helpers
 accounts-password@1.5.0
 alanning:roles
 froatsnook:valid-email
-meteortoys:allthings
 aldeed:collection2-core
 meteorhacks:ssr
 http@1.3.0

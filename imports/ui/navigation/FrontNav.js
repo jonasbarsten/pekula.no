@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router'
 
 class FrontNav extends Component {
 	render () {
@@ -7,17 +8,27 @@ class FrontNav extends Component {
 
 				<div className="row">
 					<div className="col-xs-4">
-						<span>Live</span>
+						<Link to="/">
+							<span style={{color: "black"}}>Stuff</span>
+						</Link>
 						<br />
-						<span>Label</span>
+						<Link to="/artists">
+							<span style={{color: "black"}}>Bands</span>
+						</Link>
 					</div>
 					<div className="col-xs-4 text-center">
-						<img style={{margin: '0 auto', maxWidth: '30px'}} src="images/logo-black.png" />
+						<Link to="/">
+							<img style={{margin: '0 auto', maxWidth: '30px'}} src="/images/logo-black.png" />
+						</Link>
 					</div>
 					<div className="col-xs-4 text-right">
-						<span>Info</span>
+						<Link to="/pages/info">
+							<span style={{color: "black"}}>Info</span>
+						</Link>
 						<br />
-						<span>Music</span>
+						<Link to="/releases">
+							<span style={{color: "black"}}>Music</span>
+						</Link>
 					</div>
 				</div>
 

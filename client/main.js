@@ -6,8 +6,8 @@ import { Bert } from 'meteor/themeteorchef:bert';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import 'draft-js-image-plugin/lib/plugin.css';
+import 'sweetalert2/dist/sweetalert2.min.css';
 import '../imports/ui/stylesheets/preloader-square.css';
-import '../imports/ui/stylesheets/sweetalert2.min.css';
 import '../imports/ui/stylesheets/react-datepicker.css';
 import '../imports/ui/stylesheets/style.css';
 
@@ -37,6 +37,8 @@ import EditArtist from '../imports/ui/artists/EditArtist';
 
 // Releases
 import EditRelease from '../imports/ui/releases/EditRelease';
+import ReleaseSingle from '../imports/ui/releases/ReleaseSingle';
+import AllReleases from '../imports/ui/releases/AllReleases';
 
 // Posts
 
@@ -102,6 +104,8 @@ const routes =
 			<Route name="PAGE" path="pages/:urlFriendlyName" component={PageSingle} />
 			<Route name="ARTISTS" path="artists" component={ArtistsWrapper} />
 			<Route name="ARTIST" path="artist/:artistId" component={ArtistSingle} />
+			<Route name="RELEASE" path="release/:releaseId" component={ReleaseSingle} />
+			<Route name="RELEASES" path="releases" component={AllReleases} />
 		</Route>
 
 		<Route path="/admin" component={AdminLayout} onEnter={authenticate}>

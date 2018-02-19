@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createContainer } from 'meteor/react-meteor-data';
+import { withTracker } from 'meteor/react-meteor-data';
 import swal from 'sweetalert2';
 import { browserHistory } from 'react-router';
 
@@ -67,11 +67,11 @@ class EditPage extends Component {
 	}
 }
 
-export default createContainer((params) => {
+export default withTracker((params) => {
 	const handle = Meteor.subscribe('pages');
 
 	return {
 		ready: handle.ready(),
 		page: Pages.find({urlFriendlyName: params.routeParams.urlFriendlyName}).fetch()[0]
 	};
-}, EditPage);
+})(EditPage);

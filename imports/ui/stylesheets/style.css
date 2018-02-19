@@ -1,3 +1,14 @@
+a:visited,
+a:active,
+a:focus,
+a:hover {
+	text-decoration: none;
+}
+
+a {
+	color: inherit;
+}
+
 .hover {
 	cursor: pointer;
 }
@@ -6,12 +17,28 @@
 
 #front-nav {
 	background-color: white;
-	height: 250px;
-	font-size: 2em;
+	margin-bottom: 30px;
+	font-size: 1.8em;
 	line-height: 1em;
 	margin-top: 15px;
+	text-transform: uppercase;
+	font-family: 'Helvetica';
+	font-weight: 600;
 }
 
+.post-single {
+	padding: 0 15px 15px 15px;
+}
+
+.post-single-content {
+	padding-top: 24px;
+	padding-bottom: 15px;
+	min-height: 120px;
+	background-size: cover;
+	text-align: center;
+	background-repeat: no-repeat;
+	background-position: center;
+}
 
 
 /*HOME*/
@@ -22,27 +49,8 @@
 	background-color: rgb(255, 0, 50) !important;
 }*/
 
-#home-wrapper a {
-	color: white !important;
-}
-
 .clearfix {
 	clear: both;
-}
-
-.footer-content {
-	margin-bottom: 50px;
-	font-weight: 100 !important;
-}
-
-#home-wrapper {
-	margin-top: 100px;
-	color: white;
-	font-weight: 100 !important;
-}
-
-#home-wrapper h3 {
-	font-weight: 100 !important;
 }
 
 .spacer-50 {
@@ -59,6 +67,7 @@
 
 
 .artist-card {
+	padding: 2px;
 	text-align: center;
 	text-transform: uppercase;
 	font-weight: 600;
@@ -140,6 +149,11 @@
 /* Extra Small Devices, Phones */ 
 @media only screen and (min-width : 480px) {
 
+	.post-single-content {
+		min-height: 240px;
+		padding-top: 80px;
+	}
+
 	.event-row {
 		padding: 10px;
 		font-size: 14px;
@@ -167,6 +181,11 @@
 
 	.track-list {
 		padding: 0 40px 0 40px;
+	}
+
+	.artist-card {
+		padding-left: 15px;
+		padding-right: 15px;
 	}
 
 	.artist-single-content, 

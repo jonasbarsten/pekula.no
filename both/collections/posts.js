@@ -26,6 +26,10 @@ const PostsSchema = new SimpleSchema({
 		type: String,
 		optional: true
 	},
+	"relatedId": {
+		type: String,
+		optional: true
+	},
 	"type": {
 		type: String
 	},

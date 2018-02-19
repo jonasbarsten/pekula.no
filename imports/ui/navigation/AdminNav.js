@@ -30,7 +30,7 @@ class AdminNav extends Component {
 							<li className={usersActiveClass}><Link to="/admin/users">Users</Link></li>
 							<li className={pagesActiveClass}><Link to="/admin/pages">Pages</Link></li>
 							<li className={artistsActiveClass}><Link to="/admin/artists">Artists</Link></li>
-							<li className={postsActiveClass}><Link to="/admin/posts">Posts</Link></li>
+							<li className={postsActiveClass}><Link to="/admin/posts">Stuff</Link></li>
 						</ul>
 
 						<ul className="nav navbar-nav navbar-right">

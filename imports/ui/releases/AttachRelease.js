@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createContainer } from 'meteor/react-meteor-data';
+import { withTracker } from 'meteor/react-meteor-data';
 import Masonry from 'react-masonry-component';
 
 import ReleaseCard from './ReleaseCard.js';
@@ -104,7 +104,7 @@ class AttachRelease extends Component {
 	}
 }
 
-export default createContainer(() => {
+export default withTracker(() => {
 
 	Meteor.subscribe('releases');
 
@@ -112,4 +112,4 @@ export default createContainer(() => {
 		releases: Releases.find().fetch()
 	};
 
-}, AttachRelease);
+})(AttachRelease);

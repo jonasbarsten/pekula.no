@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createContainer } from 'meteor/react-meteor-data';
+import { withTracker } from 'meteor/react-meteor-data';
 
 import AwsUpload from '../utilities/AwsUpload';
 
@@ -20,7 +20,7 @@ class AddReleasePost extends Component {
 			type: 'release',
 			heading: this.refs.heading.value,
 			text: this.refs.text.value,
-			release: this.refs.release.value,
+			relatedId: this.refs.release.value,
 			image: this.state.file.localId
 		};
 
@@ -99,7 +99,9 @@ class AddReleasePost extends Component {
 						</div>
 					</div>
 					<div className="row">
-						<button disabled={disabled} type="submit" className="btn btn-success col-xs-12">Add</button>
+						<div className="form-group col-xs-12">
+							<button disabled={disabled} type="submit" className="btn btn-success form-control">Add</button>
+						</div>
 					</div>
 				</form>
 			</div>
@@ -107,11 +109,11 @@ class AddReleasePost extends Component {
 	}
 }
 
-export default createContainer(() => {
+export default withTracker(() => {
 	Meteor.subscribe('releases');
 
 	return {
 		releases: Releases.find().fetch()
 	}
 
-}, AddReleasePost);
+})(AddReleasePost);
